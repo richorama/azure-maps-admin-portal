@@ -1,0 +1,30 @@
+{
+  "name": "azure-maps-admin",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "watch": "watchify -v -g [ babelify --presets [ \"@babel/preset-env\" ] ]  index.jsx -g [ envify --NODE_ENV development ] -o ./index.min.js",
+    "build": "npm run lint && npm run test && npm run browserify",
+    "lint": "eslint . --ext .js --ext .jsx",
+    "test": "mocha",
+    "browserify": "browserify -g babelify index.jsx -g [ envify --NODE_ENV production ] -g uglifyify  | uglifyjs --compress warnings=false --mangle > ./index.min.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.4.0",
+    "@babel/preset-env": "^7.4.2",
+    "@babel/preset-react": "^7.0.0",
+    "babelify": "^9.0.0",
+    "browserify": "^16.2.3",
+    "envify": "^4.1.0",
+    "eslint-plugin-react": "^7.12.4",
+    "ol": "^5.3.1",
+    "react": "^16.8.5",
+    "react-dom": "^16.8.5",
+    "uglify-js": "^3.5.2",
+    "watchify": "^3.11.1"
+  }
+}
