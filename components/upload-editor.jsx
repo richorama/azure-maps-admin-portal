@@ -144,7 +144,7 @@ const UploadEditor = class extends React.Component {
           className="btn btn-primary"
           onClick={this.handleShowMap}
         >
-          Show Map
+          <i className="icon icon-map" /> Show Map
         </button>
       </div>
     )
@@ -195,13 +195,13 @@ const UploadEditor = class extends React.Component {
             onClick={this.handleSave}
             className="btn btn-primary"
           >
-            Save
+            <i className="icon icon-cloud-upload" /> Save
           </button>{' '}
           <button
             onClick={this.handleCancel}
             className="btn btn-secondary"
           >
-            Cancel
+            <i className="icon icon-action-undo" /> Cancel
           </button>
         </>
       </Panel>

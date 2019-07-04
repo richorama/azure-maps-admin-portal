@@ -5,6 +5,7 @@ const routie = require('./lib/routie')
 const SubscriptionKeyPage = require('./pages/subscription-key.jsx')
 const ListPage = require('./pages/list.jsx')
 const ListItemPage = require('./pages/list-item.jsx')
+const Home = require('./pages/home.jsx')
 
 const contentElement = document.getElementById('content')
 function render(jsx) {
@@ -25,7 +26,9 @@ function handleClear() {
 }
 
 routie('', () => {
-  render(<Page activeMenuItem="#">Hello World</Page>)
+  render(<Page activeMenuItem="#">
+    <Home />
+  </Page>)
 })
 
 routie('/subscription-key', () => {

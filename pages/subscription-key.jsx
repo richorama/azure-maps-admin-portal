@@ -45,14 +45,15 @@ const SubscriptionKey = class extends Component {
             </div>
           </>
           <>
-            <input
+            <button
               disabled={!this.state.subscriptionKey}
               type="submit"
-              value="Enter"
               className="btn btn-primary"
-            />{' '}
+            >
+              <i className="icon icon-check" /> Save
+            </button>{' '}
             <a className="btn btn-secondary" onClick={this.props.onClear}>
-              Clear
+            <i className="icon icon-close" /> Clear
             </a>
           </>
         </Panel>

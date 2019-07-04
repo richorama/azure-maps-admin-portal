@@ -10,14 +10,18 @@ const FileUpload = class extends React.Component {
     if (newProps.open) this.open()
   }
   handleChange(e) {
-    if (e.target.files.length === 0) return his.props.onOpen()
+    if (e.target.files.length === 0) return this.props.onOpen()
     const reader = new FileReader()
     reader.onload = this.handleReaderLoad
     reader.readAsText(e.target.files[0])
   }
   handleReaderLoad(e) {
-    var json = JSON.parse(e.target.result)
-    this.props.onOpen(json)
+    try {
+      var json = JSON.parse(e.target.result)
+      this.props.onOpen(json)
+    } catch (e) {
+      this.props.onOpen({})
+    }
   }
   open() {
     this.refs.input.click()

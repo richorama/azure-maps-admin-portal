@@ -77,7 +77,7 @@ const List = class extends Component {
         </>
         <>
           <button className="btn btn-primary" onClick={this.handleUpload}>
-            Upload
+            <i className="icon icon-cloud-upload" /> Upload
           </button>
           <FileUpload open={this.state.upload} onOpen={this.handleUploaded} />
         </>

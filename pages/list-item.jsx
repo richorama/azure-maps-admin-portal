@@ -83,7 +83,7 @@ const ListItem = class extends Component {
           className="btn btn-primary"
           onClick={this.handleShowMap}
         >
-          Show Map
+          <i className="icon icon-map" /> Show Map
         </button>
       </div>
     )
@@ -122,14 +122,18 @@ const ListItem = class extends Component {
           />
         </>
         <>
-          <a className="btn btn-primary" href={this.state.downloadLink} download={`${this.props.udid}.json`}>
-            Download
+          <a
+            className="btn btn-primary"
+            href={this.state.downloadLink}
+            download={`${this.props.udid}.json`}
+          >
+            <i className="icon icon-cloud-download" /> Download
           </a>{' '}
           <button className="btn btn-secondary" onClick={this.handleUpload}>
-            Upload
+            <i className="icon icon-cloud-upload" /> Upload
           </button>{' '}
           <button className="btn btn-danger" onClick={this.handleDelete}>
-            Delete
+            <i className="icon icon-trash" /> Delete
           </button>
           <FileUpload open={this.state.upload} onOpen={this.handleUploaded} />
         </>
