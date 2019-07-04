@@ -1,64 +1,102 @@
 const React = require('react')
-import Map from 'ol/Map'
-import View from 'ol/View'
-import XYZ from 'ol/source/XYZ'
-import GeoJSON from 'ol/format/GeoJSON'
-import { Tile as TileLayer, Vector as VectorLayer } from 'ol/layer.js'
-import { Vector as VectorSource } from 'ol/source.js'
-import { Circle as CircleStyle, Fill, Stroke, Style } from 'ol/style.js'
-
-const image = new CircleStyle({
-  radius: 5,
-  fill: null,
-  stroke: new Stroke({ color: 'red', width: 1 })
-})
 
 const MapComponent = class extends React.PureComponent {
-  styleFunction(feature) {
-    return new Style({
-      stroke: new Stroke({
-        color: 'red',
-        width: 3
-      }),
-      fill: new Fill({
-        color: 'rgba(255,0,0,0.2)'
-      }),
-      image
-    })
+  constructor(props) {
+    super(props)
+    this.state = {
+      status: 'Initialising Map'
+    }
+    this.addLayers = this.addLayers.bind(this)
+    this.handleDone = this.handleDone.bind(this)
   }
   componentDidMount() {
-    const vectorSource = new VectorSource({
-      features: new GeoJSON().readFeatures(this.props.geoJson, {
-        dataProjection: 'EPSG:4326',
-        featureProjection: 'EPSG:3857'
-      })
+    this.map = new atlas.Map('map', {
+      center: [0, 0],
+      zoom: 1,
+      language: 'en-US',
+      authOptions: {
+        authType: 'subscriptionKey',
+        subscriptionKey: this.props.subscriptionKey
+      }
     })
 
-    new Map({
-      target: this.refs.map,
-      layers: [
-        new TileLayer({
-          source: new XYZ({
-            url: 'http://{a-c}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png'// 'https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png'
-          })
-        }),
-        new VectorLayer({
-          source: vectorSource,
-          style: this.styleFunction
-        })
-      ],
-      view: new View({
-        center: [0, 0],
-        zoom: 2
-      })
-    })
+    this.map.events.add('ready', this.addLayers)
   }
+
+  addLayers() {
+    this.setState({ status: 'Downloading Data' })
+    const datasource = new atlas.source.DataSource()
+    this.map.sources.add(datasource)
+
+    const polygonLayer = new atlas.layer.LineLayer(datasource, null, {
+      strokeColor: 'red',
+      filter: [
+        'any',
+        ['==', ['geometry-type'], 'Polygon'],
+        ['==', ['geometry-type'], 'MultiPolygon']
+      ] //Only render Polygon or MultiPolygon in this layer.
+    })
+    const lineLayer = new atlas.layer.LineLayer(datasource, null, {
+      strokeColor: 'red',
+      strokeWidth: 4,
+      filter: [
+        'any',
+        ['==', ['geometry-type'], 'LineString'],
+        ['==', ['geometry-type'], 'MultiLineString']
+      ] //Only render LineString or MultiLineString in this layer.
+    })
+    const pointLayer = new atlas.layer.SymbolLayer(datasource, null, {
+      iconOptions: {
+        allowOverlap: true,
+        ignorePlacement: true,
+        image: 'pin-round-darkblue'
+      },
+      filter: [
+        'any',
+        ['==', ['geometry-type'], 'Point'],
+        ['==', ['geometry-type'], 'MultiPoint']
+      ] //Only render Point or MultiPoints in this layer.
+    })
+    this.map.layers.add([polygonLayer, lineLayer, pointLayer])
+    if (this.props.geoJson){
+      datasource.add(this.props.geoJson)
+      this.handleDone()
+    }
+    if (this.props.geoJsonUrl){
+      datasource.importDataFromUrl(this.props.geoJsonUrl).then(this.handleDone)
+    }
+  }
+
+  handleDone() {
+    this.setState({ status: null })
+  }
+
+  renderStatus() {
+    if (!this.state.status) return null
+    return (
+      <span
+        style={{ position: 'absolute', zIndex: 1000, left: 4, top: 4 }}
+        className="badge badge-primary"
+      >
+        {this.state.status}
+      </span>
+    )
+  }
+
   render() {
     return (
-      <div
-        style={{ width: '100%', height: this.props.height || 650 }}
-        ref="map"
-      />
+      <div style={{ position: 'relative' }}>
+        {this.renderStatus()}
+        <div
+          id="map"
+          style={{
+            width: '100%',
+            height: this.props.height || 650,
+            background: '#f1f1f2'
+          }}
+          ref="map"
+        />
+      </div>
     )
   }
 }

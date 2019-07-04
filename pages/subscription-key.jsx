@@ -24,28 +24,39 @@ const SubscriptionKey = class extends Component {
 
   render() {
     return (
-      <Panel title="Enter a Subscription Key">
-        <form onSubmit={this.handleSubmit}>
-          <div className="form-group">
-            <label>Enter an Azure Maps Subscription Key to get started</label>
-            <input
-              onChange={this.handleKeyEnter}
-              className="form-control"
-              type="text"
-              value={this.state.subscriptionKey}
-              placeholder="XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
-            />
-          </div>
-          <div className="form-group">
+      <form onSubmit={this.handleSubmit}>
+        <Panel title="Enter a Subscription Key">
+          <>
+            <div className="form-group">
+              <label>Enter an Azure Maps Subscription Key to get started</label>
+              <input
+                onChange={this.handleKeyEnter}
+                className="form-control"
+                type="text"
+                value={this.state.subscriptionKey}
+                placeholder="XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+              />
+            </div>
+            <div className="form-group">
+              <label>
+                You subscription key will be stored in local storage in the
+                browser, and only sent on requests to the Azure Maps API.
+              </label>
+            </div>
+          </>
+          <>
             <input
               disabled={!this.state.subscriptionKey}
               type="submit"
               value="Enter"
               className="btn btn-primary"
-            />
-          </div>
-        </form>
-      </Panel>
+            />{' '}
+            <a className="btn btn-secondary" onClick={this.props.onClear}>
+              Clear
+            </a>
+          </>
+        </Panel>
+      </form>
     )
   }
 }

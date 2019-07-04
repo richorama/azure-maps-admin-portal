@@ -3,6 +3,8 @@ const Component = React.Component
 const Panel = require('../components/panel.jsx')
 const Loading = require('../components/loading.jsx')
 const http = require('../lib/http')
+const FileUpload = require('../components/file-upload.jsx')
+const UploadEditor = require('../components/upload-editor.jsx')
 
 const List = class extends Component {
   constructor(props) {
@@ -10,6 +12,8 @@ const List = class extends Component {
     this.state = { loading: true }
 
     this.handleServerResponse = this.handleServerResponse.bind(this)
+    this.handleUpload = this.handleUpload.bind(this)
+    this.handleUploaded = this.handleUploaded.bind(this)
   }
 
   componentDidMount() {
@@ -20,6 +24,14 @@ const List = class extends Component {
 
   handleServerResponse(data) {
     this.setState({ ...data, loading: false })
+  }
+
+  handleUpload() {
+    this.setState({ upload: true })
+  }
+
+  handleUploaded(json) {
+    this.setState({ upload: false, json, showUploadEditor: !!json })
   }
 
   renderItem(item) {
@@ -40,11 +52,35 @@ const List = class extends Component {
 
   render() {
     if (this.state.loading) return <Loading />
+    if (this.state.showUploadEditor) {
+      return (
+        <UploadEditor
+          json={this.state.json}
+          subscriptionKey={this.props.subscriptionKey}
+        />
+      )
+    }
     return (
       <Panel title="Uploaded Data">
-        <div className="list-group">
-          {this.state.mapDataList.map(x => this.renderItem(x))}
-        </div>
+        <>
+          <label>
+            You have {this.state.mapDataList.length} data sets totalling{' '}
+            {this.state.mapDataList.reduce(
+              (sub, value) => sub + value.sizeInBytes,
+              0
+            )}{' '}
+            bytes.
+          </label>
+          <div className="list-group">
+            {this.state.mapDataList.map(x => this.renderItem(x))}
+          </div>
+        </>
+        <>
+          <button className="btn btn-primary" onClick={this.handleUpload}>
+            Upload
+          </button>
+          <FileUpload open={this.state.upload} onOpen={this.handleUploaded} />
+        </>
       </Panel>
     )
   }

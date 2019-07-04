@@ -18,12 +18,23 @@ function handleSubscriptionKey(key) {
   routie('/list')
 }
 
+function handleClear() {
+  window.localStorage.subscriptionKey = ''
+  subscriptionKey = ''
+  routie('')
+}
+
+routie('', () => {
+  render(<Page activeMenuItem="#">Hello World</Page>)
+})
+
 routie('/subscription-key', () => {
   render(
     <Page activeMenuItem="#/subscription-key">
       <SubscriptionKeyPage
         subscriptionKey={subscriptionKey}
         onSubmit={handleSubscriptionKey}
+        onClear={handleClear}
       />
     </Page>
   )
@@ -46,5 +57,3 @@ routie('/list-item/:udid', udid => {
 })
 
 routie.reload()
-
-subscriptionKey ? routie('/list') : routie('/subscription-key')
