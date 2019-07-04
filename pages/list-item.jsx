@@ -102,7 +102,7 @@ const ListItem = class extends Component {
       )
     }
     return (
-      <Panel title={`List ${this.props.udid}`}>
+      <Panel title={`Data Set ${this.props.udid}`}>
         <>
           <div
             style={{
