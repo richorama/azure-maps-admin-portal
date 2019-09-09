@@ -8,7 +8,7 @@
     "build": "npm run browserify",
     "lint": "eslint . --ext .js --ext .jsx",
     "test": "mocha",
-    "browserify": "browserify -g babelify index.jsx -g [ envify --NODE_ENV production ] | uglifyjs --compress warnings=false --mangle > ./index.min.js"
+    "browserify": "browserify -g babelify index.jsx -g [ envify --NODE_ENV production ] -g uglifyify > ./index.min.js"
   },
   "keywords": [],
   "author": "",
@@ -25,6 +25,7 @@
     "react": "^16.8.5",
     "react-dom": "^16.8.5",
     "uglify-js": "^3.5.2",
-    "watchify": "^3.11.1"
+    "watchify": "^3.11.1",
+    "uglifyify": "^5.0.2"
   }
 }
