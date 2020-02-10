@@ -13,11 +13,14 @@ A browser-based application enabling you to manage the data in an Azure Maps Dat
 
 You can expose the root folder as a static website, and use the app straight away.
 
-i.e.
-
-```
-$ npx node-static
-```
+1. Create a new folder for this project within your filesystem
+2. Open a terminal window and `cd` to the new folder
+3. Run `git clone https://github.com/richorama/azure-maps-admin-portal.git`
+4. `cd` into the new `azure-maps-admin-portal` folder
+5. Run `npx node-static`
+6. Visit `http://127.0.0.0:8080` in a web browser
+7. Enter your Azure Maps key then visit the `Uploaded Data` screen
+8. Select a file to view it on the map!
 
 ## Developing
 
